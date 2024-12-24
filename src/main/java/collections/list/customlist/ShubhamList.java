@@ -1,51 +1,90 @@
 package collections.list.customlist;
 
+import java.util.Arrays;
+
 public class ShubhamList {
-    private Object[] objArr;
-    private int elementCount=0;
+    private Object[] elementData;
+    private int size =0;
+
 
     public ShubhamList() {
-        this.objArr = new Object[10];
+        this.elementData = new Object[10];
     }
 
     public ShubhamList(int index) {
-        this.objArr = new Object[index];
+        this.elementData = new Object[index];
     }
 
+
     public void add(Object obj){
-        if(elementCount == objArr.length){
+        if(size == elementData.length){
             increaseCapacity();
         }
-        objArr[elementCount]=obj;
-        elementCount++;
+        elementData[size]=obj;
+        size++;
+    }
+
+    public void add(int index,Object obj){
+        validateIndex(index);
+        for (int i = size; i > index; i--) { //0,1
+            elementData[i]=elementData[i-1];
+        }
+        elementData[index]=obj;
+        size++;
     }
 
     private void increaseCapacity() {
-        int newCapacity= objArr.length*2;
+        int oldCapacity=elementData.length;
+        int newCapacity= oldCapacity*2;
         Object[] newArr=new Object[newCapacity];
-        for (int i = 0; i < objArr.length; i++) {
-            newArr[i]=objArr[i];
+        for (int i = 0; i <size; i++) {
+            newArr[i]= elementData[i];
         }
+        elementData=newArr;
         //Another Way
-        //System.arraycopy(objArr, 0, newArr, 0, objArr.length);
-        objArr=newArr;
+        //System.arraycopy(elementData, 0, newArr, 0, elementData.length);
+        //return elementData=Arrays.copyOf(elementData, newCapacity);
     }
 
     public Object get(int index) throws ArrayIndexOutOfBoundsException {
-        if(index==0){
-            throw new ArrayIndexOutOfBoundsException("Oops wrong search....Index 0 out of bounds for length "+elementCount);
+        validateIndex(index);
+        return elementData[index];
+    }
+
+    public void remove(int index){
+        validateIndex(index);
+        for (int i = index; i < size; i++) {
+            elementData[i] = elementData[i+1];
         }
-        if(index>size()){
-            throw new ArrayIndexOutOfBoundsException("oops wrong search....total list size is "+elementCount+ " where as you are trying to get record with index "+index );
+        size--;
+    }
+
+    public void update(int index,Object obj){
+        validateIndex(index);
+        elementData[index]=obj;
+    }
+
+    private void validateIndex(int index) {
+        if(index >=size){
+            throw new ArrayIndexOutOfBoundsException("oops wrong search....total list size is "+ size + " where as you are trying to get record with index "+ index);
         }
-        return objArr[index-1];
     }
 
     public int capacity(){
-        return objArr.length;
+        return elementData.length;
     }
 
     public int size(){
-        return elementCount;
+        return size;
     }
+
+    @Override
+    public String toString() {
+        ;
+        return "ShubhamList = {" +
+                "size=" + size +
+                " ,data=" + Arrays.toString(Arrays.stream(elementData).filter(it->it!=null).toArray()) +
+                '}';
+    }
+
 }
