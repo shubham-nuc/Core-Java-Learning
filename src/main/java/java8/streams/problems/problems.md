@@ -1,0 +1,1 @@
+1. Given a list of Integers, separate odd and even numbers.
