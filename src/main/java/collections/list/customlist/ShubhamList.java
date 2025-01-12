@@ -80,11 +80,9 @@ public class ShubhamList {
 
     @Override
     public String toString() {
-        ;
         return "ShubhamList = {" +
                 "size=" + size +
                 " ,data=" + Arrays.toString(Arrays.stream(elementData).filter(it->it!=null).toArray()) +
                 '}';
     }
-
 }
